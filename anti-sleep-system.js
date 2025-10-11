@@ -76,7 +76,8 @@ class AntiSleepSystem {
             }));
         });
 
-        server.listen(process.env.ANTI_SLEEP_PORT || 3003, () => {
+        const antiSleepPort = process.env.ANTI_SLEEP_PORT || 3005; // Changed from 3003 to avoid conflicts
+        server.listen(antiSleepPort, () => {
             console.log('🏥 Anti-Sleep health check server running');
         });
     }

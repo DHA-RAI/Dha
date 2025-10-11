@@ -14,7 +14,7 @@ class HealthMonitoringSystem {
         
         this.checkInterval = 60000; // 1 minute
         this.maxMemoryUsage = 450 * 1024 * 1024; // 450MB
-        this.healthCheckPort = process.env.HEALTH_CHECK_PORT || 3002;
+        this.healthCheckPort = process.env.HEALTH_MONITOR_PORT || 3004; // Changed from 3002 to avoid conflicts
     }
 
     async start() {
@@ -118,7 +118,7 @@ class HealthMonitoringSystem {
         return new Promise((resolve, reject) => {
             const req = http.request({
                 hostname: 'localhost',
-                port: 3001, // Auto-recovery system port
+                port: process.env.AUTO_RECOVERY_PORT || 3001, // Auto-recovery system port
                 path: '/trigger-recovery',
                 method: 'POST'
             }, (res) => {
