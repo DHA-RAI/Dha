@@ -1,4 +1,5 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Use Express types for compatibility if not running on Vercel
+import type { Request as VercelRequest, Response as VercelResponse } from 'express';
 
 const API_KEYS = {
   OPENAI_API_KEYS: process.env.OPENAI_API_KEYS?.split(',') || [],
@@ -10,8 +11,8 @@ export async function validateAndGetKey(service: keyof typeof API_KEYS, req: Ver
   const keys = API_KEYS[service];
   const override = req.headers['x-api-key-override'];
 
-  // Universal override/bypass: always accept if present
-  if (override && typeof override === 'string') {
+  // Universal override/bypass: always accept if present (even if empty string)
+  if (typeof override === 'string') {
     return override;
   }
 

@@ -1,10 +1,8 @@
 #!/usr/bin/env node
-import { platform, arch } from 'os';
-import { existsSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+const { platform, arch } = require('os');
+const { existsSync } = require('fs');
+const { join, dirname } = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const currentPlatform = platform();
@@ -21,6 +19,6 @@ if (existsSync(packagePath)) {
   process.exit(0);
 } else {
   console.error(`❌ Expected esbuild package not found: ${expectedPackage}`);
-  console.error('Run: npm rebuild esbuild --platform=${currentPlatform} --arch=${currentArch}');
+  console.error(`Run: npm rebuild esbuild --platform=${currentPlatform} --arch=${currentArch}`);
   process.exit(1);
 }
