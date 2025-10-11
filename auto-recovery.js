@@ -1,6 +1,7 @@
 const os = require('os');
 const { exec } = require('child_process');
 const fs = require('fs');
+const http = require('http');
 
 class AutoRecoverySystem {
     constructor() {
@@ -16,10 +17,46 @@ class AutoRecoverySystem {
             cpu: () => this.checkCpu(),
             connectivity: () => this.checkConnectivity()
         };
+
+        // Create HTTP server
+        this.server = http.createServer(this.handleRequest.bind(this));
+    }
+    }
+
+    handleRequest(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        if (req.url === '/health') {
+            res.end(JSON.stringify({
+                status: 'healthy',
+                uptime: process.uptime(),
+                recoveryAttempts: this.config.recoveryAttempts
+            }));
+            return;
+        }
+
+        if (req.url === '/status') {
+            res.end(JSON.stringify({
+                status: 'healthy',
+                memory: this.checkMemory(),
+                cpu: this.checkCpu(),
+                uptime: process.uptime()
+            }));
+            return;
+        }
+
+        res.statusCode = 404;
+        res.end(JSON.stringify({ error: 'Not found' }));
     }
 
     start() {
         console.log('Starting auto-recovery system...');
+        
+        // Start HTTP server
+        this.server.listen(3001, () => {
+            console.log('Auto-recovery HTTP server listening on port 3001');
+        });
+        
         this.startMonitoring();
         this.setupProcessHandlers();
     }

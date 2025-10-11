@@ -1,16 +1,49 @@
 {
-  "startTime": 1760033726630,
-  "memoryUsage": {
-    "heapUsed": 9,
-    "heapTotal": 12,
-    "rss": 37,
-    "freeMem": 814
+  "status": "healthy",
+  "uptime": 294.124360335,
+  "memory": {
+    "used": 4855032,
+    "total": 5832704,
+    "external": 1855412
   },
-  "cpuUsage": {
-    "user": 0,
-    "system": 0
-  },
-  "buildStatus": "starting",
-  "errors": [],
-  "timestamp": "2025-10-09T19:08:47.565Z"
+  "lastCheck": "2025-10-11T20:45:36.690Z",
+  "restarts": 0,
+  "checks": [
+    {
+      "timestamp": "2025-10-11T20:42:36.671Z",
+      "status": "healthy",
+      "memory": {
+        "used": 5171824,
+        "total": 5832704,
+        "external": 1854612
+      }
+    },
+    {
+      "timestamp": "2025-10-11T20:43:36.675Z",
+      "status": "healthy",
+      "memory": {
+        "used": 4794000,
+        "total": 5832704,
+        "external": 1855012
+      }
+    },
+    {
+      "timestamp": "2025-10-11T20:44:36.679Z",
+      "status": "healthy",
+      "memory": {
+        "used": 4808208,
+        "total": 5832704,
+        "external": 1854612
+      }
+    },
+    {
+      "timestamp": "2025-10-11T20:45:36.690Z",
+      "status": "healthy",
+      "memory": {
+        "used": 4829904,
+        "total": 5832704,
+        "external": 1855012
+      }
+    }
+  ]
 }
