@@ -1,0 +1,43 @@
+{
+  "startTime": 1760208064738,
+  "checks": [
+    {
+      "type": "port-check",
+      "target": 3000,
+      "status": "success",
+      "error": null,
+      "timestamp": "2025-10-11T18:41:04.742Z"
+    },
+    {
+      "type": "port-check",
+      "target": 3001,
+      "status": "success",
+      "error": null,
+      "timestamp": "2025-10-11T18:41:04.743Z"
+    },
+    {
+      "type": "port-check",
+      "target": 3004,
+      "status": "success",
+      "error": null,
+      "timestamp": "2025-10-11T18:41:04.743Z"
+    },
+    {
+      "type": "port-check",
+      "target": 3005,
+      "status": "success",
+      "error": null,
+      "timestamp": "2025-10-11T18:41:04.743Z"
+    },
+    {
+      "type": "health-check",
+      "target": 3001,
+      "status": "failed",
+      "error": "",
+      "timestamp": "2025-10-11T18:41:04.756Z"
+    }
+  ],
+  "status": "failed",
+  "error": "Health check failed for port 3001",
+  "endTime": 1760208064756
+}

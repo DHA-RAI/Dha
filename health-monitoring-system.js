@@ -30,16 +30,22 @@ class HealthMonitoringSystem {
 
     startHealthServer() {
         const server = http.createServer(async (req, res) => {
-            if (req.url === '/health') {
-                const health = await this.getHealthStatus();
-                res.writeHead(health.status === 'healthy' ? 200 : 503, {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
-                });
-                res.end(JSON.stringify(health));
-            } else {
-                res.writeHead(404);
-                res.end();
+            try {
+                if (req.url === '/health') {
+                    const health = await this.getHealthStatus();
+                    res.writeHead(health.status === 'healthy' ? 200 : 503, {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    });
+                    res.end(JSON.stringify(health));
+                } else {
+                    res.writeHead(404);
+                    res.end();
+                }
+            } catch (error) {
+                console.error('Health check error:', error);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ status: 'error', error: error.message }));
             }
         });
 
