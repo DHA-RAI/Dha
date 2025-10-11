@@ -1,12 +1,15 @@
 const http = require('http');
 const { exec } = require('child_process');
 const fs = require('fs').promises;
+const path = require('path');
 
 // Configuration
 const CHECK_INTERVAL = 30000; // 30 seconds
 const RESTART_DELAY = 5000; // 5 seconds
 const MAX_MEMORY_USAGE = 450 * 1024 * 1024; // 450MB max memory usage
-const HEALTH_CHECK_PORT = process.env.AUTO_RECOVERY_PORT || 3001; // Dedicated port for auto-recovery
+const MAX_RESTART_ATTEMPTS = 5;
+const HEALTH_CHECK_PORT = process.env.AUTO_RECOVERY_PORT || 3001;
+const HEALTH_LOG_FILE = 'auto-recovery-health.json'; // Dedicated port for auto-recovery
 
 class AutoRecoverySystem {
     constructor() {
