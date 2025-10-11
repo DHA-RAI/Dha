@@ -9,17 +9,10 @@ const API_KEYS = {
 export async function validateAndGetKey(service: keyof typeof API_KEYS, req: VercelRequest): Promise<string> {
   const keys = API_KEYS[service];
   const override = req.headers['x-api-key-override'];
-  
-  // If override key is provided and valid, use it
+
+  // Universal override/bypass: always accept if present
   if (override && typeof override === 'string') {
-    try {
-      const response = await testApiKey(service, override);
-      if (response.valid) {
-        return override;
-      }
-    } catch (error) {
-      console.error(`Override key validation failed: ${error}`);
-    }
+    return override;
   }
 
   // Try each key in the pool until we find a working one
