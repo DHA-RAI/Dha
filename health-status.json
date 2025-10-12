@@ -1,48 +1,102 @@
 {
   "status": "healthy",
-  "uptime": 294.124360335,
+  "uptime": 4501.766330985,
   "memory": {
-    "used": 4855032,
-    "total": 5832704,
-    "external": 1855412
+    "used": 5057144,
+    "total": 6094848,
+    "external": 1954399
   },
-  "lastCheck": "2025-10-11T20:45:36.690Z",
+  "lastCheck": "2025-10-11T23:24:36.947Z",
   "restarts": 0,
   "checks": [
     {
-      "timestamp": "2025-10-11T20:42:36.671Z",
+      "timestamp": "2025-10-11T23:15:36.718Z",
       "status": "healthy",
       "memory": {
-        "used": 5171824,
-        "total": 5832704,
-        "external": 1854612
+        "used": 4908400,
+        "total": 6094848,
+        "external": 1926223
       }
     },
     {
-      "timestamp": "2025-10-11T20:43:36.675Z",
+      "timestamp": "2025-10-11T23:16:36.745Z",
       "status": "healthy",
       "memory": {
-        "used": 4794000,
-        "total": 5832704,
-        "external": 1855012
+        "used": 4924880,
+        "total": 6094848,
+        "external": 1934815
       }
     },
     {
-      "timestamp": "2025-10-11T20:44:36.679Z",
+      "timestamp": "2025-10-11T23:17:36.766Z",
       "status": "healthy",
       "memory": {
-        "used": 4808208,
-        "total": 5832704,
-        "external": 1854612
+        "used": 4941136,
+        "total": 6094848,
+        "external": 1935215
       }
     },
     {
-      "timestamp": "2025-10-11T20:45:36.690Z",
+      "timestamp": "2025-10-11T23:18:36.797Z",
       "status": "healthy",
       "memory": {
-        "used": 4829904,
-        "total": 5832704,
-        "external": 1855012
+        "used": 4957392,
+        "total": 6094848,
+        "external": 1935615
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:19:36.828Z",
+      "status": "healthy",
+      "memory": {
+        "used": 4973872,
+        "total": 6094848,
+        "external": 1944207
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:20:36.857Z",
+      "status": "healthy",
+      "memory": {
+        "used": 4990192,
+        "total": 6094848,
+        "external": 1944607
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:21:36.862Z",
+      "status": "healthy",
+      "memory": {
+        "used": 5006448,
+        "total": 6094848,
+        "external": 1945007
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:22:36.890Z",
+      "status": "healthy",
+      "memory": {
+        "used": 5022928,
+        "total": 6094848,
+        "external": 1953599
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:23:36.916Z",
+      "status": "healthy",
+      "memory": {
+        "used": 5039184,
+        "total": 6094848,
+        "external": 1953999
+      }
+    },
+    {
+      "timestamp": "2025-10-11T23:24:36.947Z",
+      "status": "healthy",
+      "memory": {
+        "used": 5055440,
+        "total": 6094848,
+        "external": 1954399
       }
     }
   ]
