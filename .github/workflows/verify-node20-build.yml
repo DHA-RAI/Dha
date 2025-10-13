@@ -1,0 +1,48 @@
+name: Verify Build with Node 20
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        # Install build essentials for native addons
+        sudo apt-get update
+        sudo apt-get install -y build-essential python3
+        npm ci
+
+    - name: Verify better-sqlite3 builds
+      run: npm rebuild better-sqlite3 --build-from-source
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run tests
+      run: npm test
+
+    - name: Cache native addon builds
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules/better-sqlite3/build/
+          node_modules/**/*.node
+        key: ${{ runner.os }}-node${{ matrix.node-version }}-native-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node${{ matrix.node-version }}-native-

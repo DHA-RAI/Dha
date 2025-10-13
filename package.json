@@ -5,6 +5,7 @@
   "type": "commonjs",
   "main": "dist/server/index.js",
   "scripts": {
+    "preinstall": "node scripts/check-node-version.js",
     "start": "bash ultra-robust-start.sh",
     "build": "npm run build:api && npm run build:client",
     "build:render": "bash ultra-robust-build.sh",
@@ -188,10 +189,11 @@
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^5.3.3",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "semver": "^7.5.4"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "20.x"
   },
   "keywords": [
     "dha",
