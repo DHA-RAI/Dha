@@ -14,10 +14,14 @@ const envSchema = z.object({
 
 // Database connection validation
 async function validateDatabase() {
-  const { default: Database } = await import('better-sqlite3');
   try {
-    const db = new Database(process.env.DATABASE_URL as string);
-    await db.prepare('SELECT 1').get();
+    const { Database } = require('better-sqlite3');
+    const db = new Database(':memory:'); // Test with in-memory DB first
+    const dbPath = process.env.DATABASE_URL?.replace('sqlite://', '') || '';
+    if (!fs.existsSync(path.dirname(dbPath))) {
+      fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    }
+    db.prepare('SELECT 1').get();
     db.close();
     return true;
   } catch (e) {

@@ -5,6 +5,7 @@
     "noEmitOnError": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "outDir": "./dist",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
@@ -28,6 +29,7 @@
     "**/*.test.ts",
     "**/*test*.ts",
     "**/test-*.ts",
+    "tests/**/*",
     "**/__tests__/**"
   ]
 }
