@@ -1,7 +1,7 @@
 export * from "./tables";
 
 // Audit and Compliance enums
-export const AuditAction = {
+export const AuditActionEnum = {
   LOGIN_ATTEMPT: 'login_attempt',
   LOGIN_SUCCESS: 'login_success',
   LOGIN_FAILED: 'login_failed',
@@ -22,9 +22,10 @@ export const AuditAction = {
   ICAO_API_CALL: 'icao_api_call',
 } as const;
 
-export type AuditAction = typeof AuditAction[keyof typeof AuditAction];
+export type AuditAction = typeof AuditActionEnum[keyof typeof AuditActionEnum];
+export const AuditAction = AuditActionEnum;
 
-export const ComplianceEventType = {
+export const ComplianceEventTypeEnum = {
   DATA_ACCESSED: 'data_accessed',
   DATA_MODIFIED: 'data_modified',
   DATA_DELETED: 'data_deleted',
@@ -32,7 +33,8 @@ export const ComplianceEventType = {
   CONSENT_WITHDRAWN: 'consent_withdrawn',
 } as const;
 
-export type ComplianceEventType = typeof ComplianceEventType[keyof typeof ComplianceEventType];
+export type ComplianceEventType = typeof ComplianceEventTypeEnum[keyof typeof ComplianceEventTypeEnum];
+export const ComplianceEventType = ComplianceEventTypeEnum;
 
 // Error Handling Tables
 export const errorCorrections = pgTable("error_corrections", {

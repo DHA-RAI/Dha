@@ -1,6 +1,9 @@
 import { storage } from "../storage.js";
-import { type InsertAuditLog, type InsertComplianceEvent, type AuditAction, type ComplianceEventType } from "@shared/schema";
+import { type InsertAuditLog, type InsertComplianceEvent, AuditActionEnum, ComplianceEventTypeEnum } from "@shared/schema";
 import { EventEmitter } from "events";
+
+const AuditAction = AuditActionEnum;
+const ComplianceEventType = ComplianceEventTypeEnum;
 
 export interface AuditContext {
   userId?: string;
@@ -19,11 +22,11 @@ export interface AuditContext {
 
 export class AuditTrailService extends EventEmitter {
   private static instance: AuditTrailService;
-  
+
   private constructor() {
     super();
   }
-  
+
   static getInstance(): AuditTrailService {
     if (!AuditTrailService.instance) {
       AuditTrailService.instance = new AuditTrailService();
