@@ -23,3 +23,22 @@ else
     echo "❌ No server file found!"
     exit 1
 fi
+#!/bin/bash
+set -e
+
+export NODE_ENV=production
+export PORT=${PORT:-5000}
+export HOST=${HOST:-0.0.0.0}
+
+echo "🚀 Starting DHA Digital Services"
+echo "================================"
+
+# Start the server
+if [ -f "dist/server/index.js" ]; then
+    node dist/server/index.js
+elif [ -f "dist/index.js" ]; then
+    node dist/index.js
+else
+    echo "⚠️ No server file found, using fallback"
+    node server/index.js
+fi

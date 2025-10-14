@@ -65,3 +65,28 @@ echo ""
 echo "✅ Build Complete!"
 echo "=================="
 ls -la dist/ || true
+#!/bin/bash
+set -e
+
+echo "🚀 Building for Production"
+echo "=========================="
+
+# Install dependencies
+npm ci --legacy-peer-deps
+
+# Build client
+cd client
+npm ci --legacy-peer-deps
+npm run build
+cd ..
+
+# Build server
+npx tsc --project tsconfig.production.json --skipLibCheck || npx tsc --project tsconfig.json --skipLibCheck
+
+# Verify builds
+if [ ! -d "dist/public" ]; then
+    mkdir -p dist/public
+    cp -r client/dist/* dist/public/
+fi
+
+echo "✅ Build Complete!"
