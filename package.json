@@ -73,9 +73,10 @@
     "@tanstack/react-query": "^5.40.0",
     "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/compression": "^1.7.5",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.23",
     "@types/express-session": "^1.18.2",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.6",
@@ -164,7 +165,7 @@
     "winston": "^3.18.3",
     "wouter": "^3.7.1",
     "ws": "^8.18.3",
-    "zod": "^3.23.8",
+    "zod": "^3.25.76",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
@@ -183,14 +184,14 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "postcss": "^8.5.6",
+    "semver": "^7.5.4",
     "tailwindcss": "^3.4.18",
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^5.3.3",
-    "vitest": "^1.6.0",
-    "semver": "^7.5.4"
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": "20.x"
