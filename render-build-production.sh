@@ -6,24 +6,37 @@ set -e
 echo "🚀 Starting Render Production Build"
 echo "===================================="
 
+# Ensure correct Node.js version
+echo "🔧 Setting up Node.js environment..."
+export PATH="/usr/local/bin:$PATH"
+node_version=$(node --version)
+if [[ ! $node_version =~ ^v20 ]]; then
+    echo "❌ Wrong Node.js version. Installing Node.js 20..."
+    sudo npm install -g n
+    sudo n 20.19.0
+    hash -r
+    export PATH="/usr/local/bin:$PATH"
+fi
+
 # Clean previous builds
 echo "🧹 Cleaning previous builds..."
-rm -rf dist build node_modules/.cache || true
+rm -rf dist build node_modules/.cache client/node_modules/.cache || true
 
-# Install dependencies with exact versions
+# Install dependencies with increased memory limit
 echo "📦 Installing dependencies..."
-npm ci --legacy-peer-deps --no-audit --prefer-offline || npm install --legacy-peer-deps --no-audit
+export NODE_OPTIONS="--max-old-space-size=4096"
+npm ci --legacy-peer-deps --no-audit --prefer-offline || npm install --legacy-peer-deps --no-audit --force
 
 # Install client dependencies
 echo "📦 Installing client dependencies..."
 cd client
-npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+npm ci --legacy-peer-deps --no-audit || npm install --legacy-peer-deps --no-audit --force
 cd ..
 
-# Build client
+# Build client with optimizations
 echo "🔨 Building client..."
 cd client
-npm run build
+NODE_ENV=production npm run build
 cd ..
 
 # Build server with validation

@@ -1,12 +1,9 @@
 import { eq, lt, gt, sql } from "drizzle-orm";
 import { PostgresqlStorage } from "../postgresql-storage";
 import { sessions } from "../../shared/schema/tables";
-import { Session, InsertSession } from "../postgresql-storage";
+import type { IStorage, Session, InsertSession } from "../postgresql-storage";
 import { DatabaseError } from "../errors/database-error";
-
-import type { IStorage } from "../postgresql-storage";
-import type { Session, InsertSession } from "../postgresql-storage";
-import type { DatabaseError } from "../errors/database-error";
+import crypto from 'crypto';
 
 /**
  * Interface for session storage operations.
@@ -63,8 +60,8 @@ export function createSessionStorageExtension(storage: IStorage): SessionStorage
           Array.from({ length: 100 }).map(() => storage.getSession(crypto.randomUUID()))
         );
 
-        const expired = tokens.filter((s): s is Session => s !== undefined && s.expiresAt < before);
-        await Promise.all(expired.map(s => storage.invalidateSession(s.token)));
+        const expired = tokens.filter((s: Session | undefined): s is Session => s !== undefined && s.expiresAt < before);
+        await Promise.all(expired.map((s: Session) => storage.invalidateSession(s.token)));
       } catch (error: unknown) {
         throw new DatabaseError(
           `Failed to cleanup expired sessions: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -73,25 +70,5 @@ export function createSessionStorageExtension(storage: IStorage): SessionStorage
         );
       }
     }
-  };
-}
-  };
-}
-}
-});
-  };
-}
-  };
-
-  return sessionStorage;
-}
-  };
-}
-  };
-}
-  };
-}
-  };
-}
   };
 }

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowJs": true,
@@ -29,10 +29,14 @@
     "baseUrl": ".",
     "importHelpers": true,
     "paths": {
-      "@shared/*": ["./shared/*"],
-      "@/*": ["./client/src/*"],
-      "#shared/*": ["./shared/*"],
-      "#server/*": ["./server/*"]
+      "drizzle-orm": ["./node_modules/drizzle-orm"],
+      "drizzle-orm/*": ["./node_modules/drizzle-orm/*"]
+    },
+    "paths": {
+      "@server/*": ["server/*"],
+      "@shared/*": ["shared/*"],
+      "drizzle-orm": ["./node_modules/drizzle-orm"],
+      "drizzle-orm/*": ["./node_modules/drizzle-orm/*"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

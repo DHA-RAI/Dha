@@ -13,8 +13,7 @@
  * - Emergency response capabilities
  */
 
-import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
-import { performance } from 'perf_hooks';
+import { isMainThread, parentPort, workerData } from 'worker_threads';
 
 interface ThreatDetectionConfig {
   latencyBudget: number;          // Maximum allowed latency in milliseconds
@@ -171,7 +170,7 @@ class ThreatDetectionWorker {
         detectionTime: process.hrtime.bigint(),
         mitigationActions: [],
         confident: false,
-        metadata: { error: error.message }
+        metadata: { error: error instanceof Error ? error.message : String(error) }
       };
     }
   }
@@ -193,7 +192,11 @@ class ThreatDetectionWorker {
       // Perform analysis
       this.doThreatAnalysis(request).then((result) => {
         clearTimeout(timeoutId);
-        resolve(result);
+        resolve({
+          ...result,
+          responseTime: Date.now() - Number(startTime),
+          detectionTime: BigInt(Date.now())
+        });
       }).catch((error) => {
         clearTimeout(timeoutId);
         reject(error);
@@ -500,7 +503,7 @@ if (!isMainThread && parentPort) {
         } catch (error) {
           parentPort!.postMessage({ 
             type: 'threat_analysis_error', 
-            data: { requestId: message.data.id, error: error.message } 
+            data: { requestId: message.data.id, error: error instanceof Error ? error.message : String(error) } 
           });
         }
         break;
@@ -526,4 +529,5 @@ if (!isMainThread && parentPort) {
   console.log('[ThreatWorker] Worker ready for threat analysis');
 }
 
-export { ThreatDetectionWorker, ThreatDetectionConfig, ThreatAnalysisRequest, ThreatAnalysisResult };
+export { ThreatDetectionWorker };
+export type { ThreatDetectionConfig, ThreatAnalysisRequest, ThreatAnalysisResult };
