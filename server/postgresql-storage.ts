@@ -583,69 +583,15 @@ export class PostgreSQLStorage implements IStorage {
   // Statistics
   getStats(): Promise<{ users: number; conversations: number; messages: number; documents: number; securityEvents: number; systemMetrics: number; auditLogs: number; complianceEvents: number; userBehaviorProfiles: number; }>;
 }
-  // Private helper method for getting stats
-  private async getStatsAsync(): Promise<{
-    users: number;
-    conversations: number;
-    messages: number;
-    documents: number;
-    securityEvents: number;
-    systemMetrics: number;
-    auditLogs: number;
-    complianceEvents: number;
-    userBehaviorProfiles: number;
-  }> {
-    try {
-      const [
-        usersCount,
-        conversationsCount,
-        messagesCount,
-        documentsCount,
-        securityEventsCount,
-        systemMetricsCount,
-        auditLogsCount,
-        complianceEventsCount,
-        userBehaviorProfilesCount
-      ] = await Promise.all([
-        db.select({ count: sql<number>`count(*)` }).from(users).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(conversations).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(messages).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(documents).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(securityEvents).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(systemMetrics).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(auditLogs).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(complianceEvents).then(res => Number(res[0]?.count || 0)),
-        db.select({ count: sql<number>`count(*)` }).from(userBehaviorProfiles).then(res => Number(res[0]?.count || 0))
-      ]);
 
-      return {
-        users: usersCount,
-        conversations: conversationsCount,
-        messages: messagesCount,
-        documents: documentsCount,
-        securityEvents: securityEventsCount,
-        systemMetrics: systemMetricsCount,
-        auditLogs: auditLogsCount,
-        complianceEvents: complianceEventsCount,
-        userBehaviorProfiles: userBehaviorProfilesCount
-      };
-    } catch (error) {
-      console.error('Error getting stats:', error);
-      return {
-        users: 0,
-        conversations: 0,
-        messages: 0,
-        documents: 0,
-        securityEvents: 0,
-        systemMetrics: 0,
-        auditLogs: 0,
-        complianceEvents: 0,
-        userBehaviorProfiles: 0
-      };
-    }
-  }
-}
+/**
+ * PostgreSQL Storage Implementation
+ * Implements the IStorage interface using Drizzle ORM for database operations
+ */
+export class PostgreSQLStorage implements IStorage {
+  private readonly dbInstance = db;
 
+  // User management
   async getUserByEmail(email: string): Promise<User | undefined> {
     try {
       const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
