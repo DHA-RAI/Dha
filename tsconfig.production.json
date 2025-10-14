@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "commonjs",
+    "module": "es2020",
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "strict": true,
     "removeComments": true,
     "sourceMap": true,
     "declaration": true,
@@ -21,8 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["server/**/*", "shared/**/*"],
   "exclude": [

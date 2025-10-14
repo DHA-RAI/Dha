@@ -3,11 +3,18 @@ services:
     name: dha-digital-services
     env: node
     region: frankfurt
-    plan: free
-    buildCommand: bash -c "chmod +x scripts/deploy.sh && ./scripts/deploy.sh"
+    plan: starter # Changed from free for better stability
+    buildCommand: >
+      bash -c "npm ci --prefer-offline --no-audit --legacy-peer-deps &&
+      npm run build &&
+      chmod +x scripts/pre-deployment-check.sh scripts/deploy.sh &&
+      ./scripts/pre-deployment-check.sh &&
+      ./scripts/deploy.sh"
     startCommand: node dist/server/index.js
     healthCheckPath: /health
-    healthCheckTimeout: 180
+    healthCheckTimeout: 300
+    buildFilter:
+      paths: ["src/**", "scripts/**", "package.json", "package-lock.json"]
     envVars:
       - key: NODE_ENV
         value: production
@@ -65,8 +72,12 @@ services:
     name: dha-monitoring-service
     runtime: node
     plan: starter
-    buildCommand: npm ci --legacy-peer-deps
+    buildCommand: >
+      bash -c "npm ci --prefer-offline --no-audit --legacy-peer-deps &&
+      npm run build:monitor"
     startCommand: node dist/monitor.js
+    buildFilter:
+      paths: ["src/**", "monitor/**", "package.json", "package-lock.json"]
     envVars:
       - key: NODE_ENV
         value: production

@@ -1,56 +1,22 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, integer, timestamp, boolean, jsonb, varchar } from "drizzle-orm/pg-core";
+export * from "./tables";
 
-// Base Types
-export interface Coordinates {
-  lat: number;
-  lng: number;
-}
-
-export interface Location {
-  country?: string;
-  region?: string;
-  city?: string;
-  coordinates?: Coordinates;
-}
-
-// Core Tables
-export const dhaDocumentVerifications = pgTable("dha_document_verifications", {
+// Error Handling Tables
+export const errorCorrections = pgTable("error_corrections", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  verificationCode: text("verification_code").notNull().unique(),
-  documentNumber: text("document_number"),
-  documentType: text("document_type"),
-  issuedAt: timestamp("issued_at"),
-  expiresAt: timestamp("expires_at"),
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  updatedAt: timestamp("updated_at").notNull().default(sql`now()`),
-  userId: varchar("user_id"),
-  documentData: jsonb("document_data"),
-  verificationStatus: text("verification_status").notNull().default("pending"),
-  verificationMethod: text("verification_method"),
-  verificationResult: jsonb("verification_result"),
-  aiScore: integer("ai_score"),
-  humanVerified: boolean("human_verified").notNull().default(false),
-  lastVerifiedAt: timestamp("last_verified_at"),
-  revokedAt: timestamp("revoked_at"),
-  revocationReason: text("revocation_reason")
+  timestamp: timestamp("timestamp").notNull().default(sql`now()`),
+  errorType: text("error_type").notNull(),
+  correction: text("correction").notNull(),
+  success: boolean("success").notNull(),
+  details: jsonb("details").notNull()
 });
 
-export const verificationSessions = pgTable("verification_sessions", {
+export const healthCheckResults = pgTable("health_check_results", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id"),
-  sessionToken: text("session_token").notNull().unique(),
-  status: text("status").notNull().default("active"),
-  createdAt: timestamp("created_at").notNull().default(sql`now()`),
-  expiresAt: timestamp("expires_at").notNull(),
-  lastActivity: timestamp("last_activity"),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  metadata: jsonb("metadata"),
-  currentVerifications: integer("current_verifications").notNull().default(0),
-  maxVerifications: integer("max_verifications").notNull().default(100),
-  isActive: boolean("is_active").notNull().default(true)
+  timestamp: timestamp("timestamp").notNull().default(sql`now()`),
+  component: text("component").notNull(),
+  status: text("status").notNull(),
+  details: jsonb("details").notNull(),
+  responseTime: integer("response_time").notNull()
 });
 
 export const apiAccess = pgTable("api_access", {

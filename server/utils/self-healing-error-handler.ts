@@ -1,11 +1,6 @@
 import { EventEmitter } from 'events';
-import type { 
-  ErrorCorrection,
-  InsertErrorCorrection,
-  HealthCheckResult,
-  InsertHealthCheckResult
-} from '../shared/schema.js';
-import { db } from './db.js';
+import { db } from '../db';
+import { errorCorrections, healthCheckResults } from '../../shared/schema/error-handling';
 import { Logger } from '../utils/logger.js';
 
 const logger = new Logger('self-healing-error-handler');
@@ -107,10 +102,15 @@ export class SelfHealingErrorHandler extends EventEmitter {
 
     circuitBreaker.recordFailure();
     await this.logErrorCorrection({
-      context,
-      error: error.message,
-      attempts: retryCount,
-      status: 'failed'
+      errorType: 'RetryExhausted',
+      correction: 'Circuit breaker triggered',
+      success: false,
+      details: {
+        context,
+        error: error.message,
+        attempts: retryCount,
+        timestamp: new Date().toISOString()
+      }
     });
   }
 
@@ -120,10 +120,13 @@ export class SelfHealingErrorHandler extends EventEmitter {
     this.retryDelays.delete(context);
 
     await this.logErrorCorrection({
-      context,
-      error: 'Recovered',
-      attempts: 1,
-      status: 'success'
+      errorType: 'SystemRecovery',
+      correction: 'Service restored',
+      success: true,
+      details: {
+        context,
+        timestamp: new Date().toISOString()
+      }
     });
   }
 
@@ -136,35 +139,56 @@ export class SelfHealingErrorHandler extends EventEmitter {
     try {
       // Implement health check logic here
       await this.logHealthCheckResult({
-        context,
-        status: 'success',
-        details: 'Health check passed'
+        component: context,
+        status: 'healthy',
+        details: { message: 'Health check passed' },
+        responseTime: 0
       });
     } catch (error) {
       await this.logHealthCheckResult({
-        context,
-        status: 'failed',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        component: context,
+        status: 'error',
+        details: { 
+          message: error instanceof Error ? error.message : 'Unknown error',
+          timestamp: new Date().toISOString()
+        },
+        responseTime: 0
       });
     }
   }
 
-  private async logErrorCorrection(correction: Omit<InsertErrorCorrection, 'id' | 'timestamp'>): Promise<void> {
+  private async logErrorCorrection(correction: {
+    errorType: string;
+    correction: string;
+    success: boolean;
+    details: Record<string, unknown>;
+  }): Promise<void> {
     try {
       await db.insert(errorCorrections).values({
-        ...correction,
-        timestamp: new Date()
+        timestamp: new Date(),
+        errorType: correction.errorType,
+        correction: correction.correction,
+        success: correction.success,
+        details: correction.details
       });
     } catch (error) {
       logger.error('Failed to log error correction:', error);
     }
   }
 
-  private async logHealthCheckResult(result: Omit<InsertHealthCheckResult, 'id' | 'timestamp'>): Promise<void> {
+  private async logHealthCheckResult(result: {
+    component: string;
+    status: 'healthy' | 'warning' | 'error';
+    details: Record<string, unknown>;
+    responseTime: number;
+  }): Promise<void> {
     try {
       await db.insert(healthCheckResults).values({
-        ...result,
-        timestamp: new Date()
+        timestamp: new Date(),
+        component: result.component,
+        status: result.status,
+        details: result.details,
+        responseTime: result.responseTime
       });
     } catch (error) {
       logger.error('Failed to log health check result:', error);

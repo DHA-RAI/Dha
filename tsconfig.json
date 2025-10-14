@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -13,15 +13,15 @@
     "strictNullChecks": true,
     "noErrorTruncation": true,
     "composite": false,
-    "noEmitOnError": false,
+    "noEmitOnError": true,
     "skipLibCheck": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "preserveWatchOutput": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "types": ["node", "vite/client"],
+    "types": ["node", "vite/client", "@types/express", "@types/jest"],
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -40,7 +40,8 @@
     "emitDecoratorMetadata": true,
     "removeComments": true,
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
+    "declarationMap": true,
     "incremental": true
   },
   "ts-node": {
