@@ -4,7 +4,7 @@ services:
     env: node
     region: frankfurt
     plan: free
-    buildCommand: chmod +x scripts/deploy.sh && ./scripts/deploy.sh
+    buildCommand: bash -c "chmod +x scripts/deploy.sh && ./scripts/deploy.sh"
     startCommand: node dist/server/index.js
     healthCheckPath: /health
     healthCheckTimeout: 180
