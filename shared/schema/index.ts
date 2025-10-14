@@ -22,6 +22,8 @@ export const AuditAction = {
   ICAO_API_CALL: 'icao_api_call',
 } as const;
 
+export type AuditAction = typeof AuditAction[keyof typeof AuditAction];
+
 export const ComplianceEventType = {
   DATA_ACCESSED: 'data_accessed',
   DATA_MODIFIED: 'data_modified',
@@ -29,6 +31,8 @@ export const ComplianceEventType = {
   CONSENT_GIVEN: 'consent_given',
   CONSENT_WITHDRAWN: 'consent_withdrawn',
 } as const;
+
+export type ComplianceEventType = typeof ComplianceEventType[keyof typeof ComplianceEventType];
 
 // Error Handling Tables
 export const errorCorrections = pgTable("error_corrections", {
