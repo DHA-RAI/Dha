@@ -1,10 +1,13 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
-    "noEmitOnError": true,
+    "target": "es2020",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
