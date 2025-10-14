@@ -10,26 +10,22 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@db": path.resolve(__dirname, "../db"),
     },
   },
   server: {
-    host: "0.0.0.0",
+    host: '0.0.0.0',
     port: 5000,
-    strictPort: false,
-    hmr: {
-      clientPort: 443,
-      protocol: 'wss'
-    }
+    strictPort: true,
+    allowedHosts: [
+      '.replit.dev',
+      '.repl.co',
+      '.worf.replit.dev',
+      'localhost',
+    ],
   },
   build: {
-    outDir: "dist",
-    sourcemap: true,
-    rollupOptions: {
-      onwarn(warning, warn) {
-        // Suppress certain warnings
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return;
-        warn(warning);
-      }
-    }
+    outDir: '../dist/public',
+    emptyOutDir: true,
   },
 });

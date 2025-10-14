@@ -1,5 +1,35 @@
 export * from "./tables";
 
+// Audit and Compliance enums
+export const AuditAction = {
+  LOGIN_ATTEMPT: 'login_attempt',
+  LOGIN_SUCCESS: 'login_success',
+  LOGIN_FAILED: 'login_failed',
+  LOGOUT: 'logout',
+  PASSWORD_CHANGED: 'password_changed',
+  DOCUMENT_UPLOADED: 'document_uploaded',
+  DOCUMENT_DOWNLOADED: 'document_downloaded',
+  DOCUMENT_VIEWED: 'document_viewed',
+  DOCUMENT_DELETED: 'document_deleted',
+  DOCUMENT_MODIFIED: 'document_modified',
+  DOCUMENT_VERIFIED: 'document_verified',
+  USER_CREATED: 'user_created',
+  USER_UPDATED: 'user_updated',
+  USER_DELETED: 'user_deleted',
+  API_CALL: 'api_call',
+  DHA_API_CALL: 'dha_api_call',
+  SAPS_API_CALL: 'saps_api_call',
+  ICAO_API_CALL: 'icao_api_call',
+} as const;
+
+export const ComplianceEventType = {
+  DATA_ACCESSED: 'data_accessed',
+  DATA_MODIFIED: 'data_modified',
+  DATA_DELETED: 'data_deleted',
+  CONSENT_GIVEN: 'consent_given',
+  CONSENT_WITHDRAWN: 'consent_withdrawn',
+} as const;
+
 // Error Handling Tables
 export const errorCorrections = pgTable("error_corrections", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
