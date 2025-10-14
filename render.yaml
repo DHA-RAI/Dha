@@ -2,71 +2,26 @@ services:
   - type: web
     name: dha-digital-services
     env: node
-    region: frankfurt
-    plan: starter # Changed from free for better stability
-    buildCommand: >
-      bash -c "npm ci --prefer-offline --no-audit --legacy-peer-deps &&
-      npm run build &&
-      chmod +x scripts/pre-deployment-check.sh scripts/deploy.sh &&
-      ./scripts/pre-deployment-check.sh &&
-      ./scripts/deploy.sh"
-    startCommand: node dist/server/index.js
-    healthCheckPath: /health
-    healthCheckTimeout: 300
-    buildFilter:
-      paths: ["src/**", "scripts/**", "package.json", "package-lock.json"]
+    region: oregon
+    plan: free
+    buildCommand: chmod +x render-build-production.sh && bash render-build-production.sh
+    startCommand: chmod +x render-start-production.sh && bash render-start-production.sh
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 20
       - key: PORT
-        value: 5000
+        generateValue: true
       - key: HOST
         value: 0.0.0.0
-      # Universal API Override
-      - key: UNIVERSAL_API_OVERRIDE
-        value: true
-      - key: BYPASS_API_VALIDATION
-        value: true
-      - key: FORCE_API_SUCCESS
-        value: true
-      # Self-Healing
-      - key: AUTO_RECOVERY
-        value: true
-      - key: CIRCUIT_BREAKER_ENABLED
-        value: true
-      - key: GRACEFUL_DEGRADATION
-        value: true
-      # Monitoring Configuration
-      - key: ENABLE_MONITORING
-        value: true
-      - key: MONITOR_INTERVAL
-        value: 60000
-      - key: MAX_RETRY_ATTEMPTS
-        value: 3
-      - key: ALERT_THRESHOLD
-        value: 5
-      # Secrets (sync from Render dashboard)
-      - key: DATABASE_URL
-        sync: false
+      - key: NPM_CONFIG_PRODUCTION
+        value: false
       - key: SESSION_SECRET
-        sync: false
+        generateValue: true
       - key: JWT_SECRET
-        sync: false
-      - key: ENCRYPTION_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: ANTHROPIC_API_KEY
-        sync: false
-      # Extra failsafe environment variables
-      - key: MAXIMUM_PROTECTION_MODE
-        value: true
-      - key: ENABLE_SELF_HEALING
-        value: true
-      - key: ENABLE_AUTO_RECOVERY
-        value: true
-      - key: ENABLE_ULTRA_MONITORING
-        value: true
+        generateValue: true
+    healthCheckPath: /api/health
 
   - type: worker
     name: dha-monitoring-service

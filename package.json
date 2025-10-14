@@ -7,6 +7,8 @@
   "scripts": {
     "preinstall": "node scripts/check-node-version.js",
     "start": "node dist/server/index.js",
+    "render-build": "bash render-build-production.sh",
+    "render-start": "bash render-start-production.sh",
     "build": "npm run clean:dist && npm run build:api && npm run build:client",
     "build:production": "NODE_ENV=production npm run build",
     "build:secure": "NODE_ENV=production bash scripts/production-build.sh",
