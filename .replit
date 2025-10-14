@@ -56,7 +56,7 @@ integrations = ["javascript_database:1.0.0", "javascript_openai:1.0.0", "javascr
 expertMode = true
 
 [workflows]
-runButton = "Project"
+runButton = "Run Pre-Deployment Tests"
 
 [[workflows.workflow]]
 name = "Simple "
