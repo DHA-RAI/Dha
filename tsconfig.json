@@ -29,10 +29,6 @@
     "baseUrl": ".",
     "importHelpers": true,
     "paths": {
-      "drizzle-orm": ["./node_modules/drizzle-orm"],
-      "drizzle-orm/*": ["./node_modules/drizzle-orm/*"]
-    },
-    "paths": {
       "@server/*": ["server/*"],
       "@shared/*": ["shared/*"],
       "drizzle-orm": ["./node_modules/drizzle-orm"],
