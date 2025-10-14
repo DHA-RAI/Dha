@@ -63,7 +63,7 @@ runTest('Required Environment Variables', () => {
   if (missing.length > 0) throw new Error(`Missing env vars: ${missing.join(', ')}`);
 });
 
-// 5. Build Script Permissions
+// 5. Build Scripts Executable
 runTest('Build Scripts Executable', () => {
   const scripts = ['render-build-production.sh', 'render-start-production.sh'];
   for (const script of scripts) {

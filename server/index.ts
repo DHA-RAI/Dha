@@ -7,7 +7,7 @@ import { dirname, join } from 'path';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
 
-import { 
+import {
   universalAPIOverrideMiddleware,
   selfHealingErrorHandler,
   circuitBreakerMiddleware,
@@ -118,10 +118,41 @@ app.use(helmet({
 }));
 
 app.use(compression());
+
+// CORS configuration
+const allowedOrigins = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'https://*.replit.dev',
+  'https://*.repl.co',
+  'https://*.worf.replit.dev',
+  /^https:\/\/.*\.replit\.dev$/,
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://*.replit.app', 'https://*.replit.dev']
-    : ['http://localhost:3000', 'http://localhost:5173', 'http://0.0.0.0:5000'],
+  origin: (origin, callback) => {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (typeof allowed === 'string') {
+        return allowed === origin || allowed === '*';
+      }
+      if (allowed instanceof RegExp) {
+        return allowed.test(origin);
+      }
+      return false;
+    });
+
+    if (isAllowed || origin.includes('.replit.dev') || origin.includes('.repl.co')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
