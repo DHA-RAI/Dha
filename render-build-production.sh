@@ -70,12 +70,13 @@ fi
 # Ensure dist directory exists
 mkdir -p dist/server dist/public
 
-# Verify builds
+# Verify builds and set up fallback
 echo "✅ Verifying builds..."
 if [ ! -f "dist/server/index.js" ] && [ ! -f "dist/index.js" ]; then
-    echo "⚠️ Creating fallback server..."
+    echo "⚠️ Setting up fallback server..."
     mkdir -p dist/server
-    cat > dist/server/index.js << 'EOF'
+    cp server/fallback.js dist/server/index.js || handle_error "Failed to copy fallback server"
+fi
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
