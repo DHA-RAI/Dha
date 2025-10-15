@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# Render Production Build Script
+# Render Production Build Script with enhanced error handling
 set -e
 
 echo "🚀 Starting Render Production Build"
 echo "===================================="
+
+# Set environment variables
+export NODE_ENV=production
+export NODE_OPTIONS="--max-old-space-size=4096"
 
 # Ensure correct Node.js version
 echo "🔧 Setting up Node.js environment..."
@@ -30,13 +34,16 @@ npm ci --legacy-peer-deps --no-audit --prefer-offline || npm install --legacy-pe
 # Install client dependencies
 echo "📦 Installing client dependencies..."
 cd client
-npm ci --legacy-peer-deps --no-audit || npm install --legacy-peer-deps --no-audit --force
-cd ..
+
+# Install Tailwind and PostCSS explicitly
+echo "📦 Installing Tailwind CSS and PostCSS..."
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+npm install --legacy-peer-deps --no-audit --force
 
 # Build client with optimizations
 echo "🔨 Building client..."
-cd client
-NODE_ENV=production npm run build
+export NODE_ENV=production
+npm run build
 cd ..
 
 # Build server with validation
