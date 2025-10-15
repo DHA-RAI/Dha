@@ -22,14 +22,27 @@ if [[ ! $node_version =~ ^v20 ]]; then
     export PATH="/usr/local/bin:$PATH"
 fi
 
+# Error handling function
+handle_error() {
+    echo "❌ Error: $1"
+    echo "==== Last 50 lines of npm debug log ===="
+    tail -n 50 ~/.npm/_logs/$(ls -t ~/.npm/_logs | head -n 1) || true
+    echo "======================================"
+    exit 1
+}
+
 # Clean previous builds
 echo "🧹 Cleaning previous builds..."
 rm -rf dist build node_modules/.cache client/node_modules/.cache || true
 
-# Install dependencies with increased memory limit
+# Install dependencies with increased memory limit and error handling
 echo "📦 Installing dependencies..."
 export NODE_OPTIONS="--max-old-space-size=4096"
-npm ci --legacy-peer-deps --no-audit --prefer-offline || npm install --legacy-peer-deps --no-audit --force
+npm ci --legacy-peer-deps --no-audit --prefer-offline || npm install --legacy-peer-deps --no-audit --force || handle_error "Failed to install dependencies"
+
+# Verify critical dependencies
+echo "🔍 Verifying critical dependencies..."
+npm ls tailwindcss postcss autoprefixer || handle_error "Critical dependencies missing"
 
 # Install client dependencies
 echo "📦 Installing client dependencies..."
