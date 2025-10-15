@@ -4,24 +4,39 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: chmod +x render-build-production.sh && bash render-build-production.sh
-    startCommand: chmod +x render-start-production.sh && bash render-start-production.sh
+    buildCommand: |
+      export NODE_OPTIONS="--max-old-space-size=4096"
+      chmod +x render-build-production.sh
+      bash render-build-production.sh
+    startCommand: |
+      chmod +x render-start-production.sh
+      bash render-start-production.sh
     envVars:
       - key: NODE_ENV
         value: production
       - key: NODE_VERSION
-        value: 20
+        value: "20.19.0"
       - key: PORT
         generateValue: true
       - key: HOST
         value: 0.0.0.0
       - key: NPM_CONFIG_PRODUCTION
-        value: false
+        value: "false"
       - key: SESSION_SECRET
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
     healthCheckPath: /api/health
+    healthCheckTimeout: 300
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - server/**
+        - client/**
+        - shared/**
+        - package.json
+        - render*.sh
+    staticPublishPath: ./dist/public
 
   - type: worker
     name: dha-monitoring-service
