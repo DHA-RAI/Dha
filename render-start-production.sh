@@ -29,18 +29,43 @@ echo "Host: $HOST"
 echo "Node Options: $NODE_OPTIONS"
 echo "Node Version: $(node --version)"
 
-# Start the server with fallback options
+# Debug info
+echo "📊 Debug Information"
+echo "Current directory: $(pwd)"
+echo "Directory contents:"
+ls -la
+echo "Dist directory contents:"
+ls -la dist || echo "No dist directory"
+echo "Server directory contents:"
+ls -la server || echo "No server directory"
+
+# Check for required files
+echo "🔍 Checking for required files..."
+if [ ! -d "dist" ]; then
+    handle_error "Dist directory not found"
+fi
+
+if [ ! -d "dist/public" ]; then
+    handle_error "Public directory not found"
+fi
+
+# Start the server with enhanced error handling
+echo "🚀 Starting server..."
 if [ -f "dist/server/index.js" ]; then
     echo "✅ Starting from dist/server/index.js"
-    node dist/server/index.js
+    node --trace-warnings dist/server/index.js 2>&1 | tee server.log || handle_error "Server crashed"
 elif [ -f "dist/index.js" ]; then
     echo "✅ Starting from dist/index.js"
-    node dist/index.js
-elif [ -f "server/index.js" ]; then
-    echo "⚠️ Using source server/index.js"
-    node server/index.js
+    node --trace-warnings dist/index.js 2>&1 | tee server.log || handle_error "Server crashed"
 else
-    echo "❌ No server file found!"
-    ls -la dist/ || echo "No dist directory"
-    exit 1
+    handle_error "No server file found"
 fi
+
+# Monitor server startup
+tail -f server.log | while read line; do
+    echo "$line"
+    if [[ $line == *"Server running on port"* ]]; then
+        echo "✅ Server started successfully!"
+        break
+    fi
+done
